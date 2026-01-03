@@ -1,3 +1,5 @@
+## VendFI: See What's Working, Fix What's Not || 
+
 ## Our Solution
 
 **VendFI turns messy CSV exports into beautiful, actionable finance performance reports in seconds.**
