@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finance Analytics Report - vendor-001</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: #1a202c;
+      background: #f7fafc;
+      padding: 2rem;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+      overflow: hidden;
+    }
+    
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 2.5rem 2rem;
+    }
+    
+    .header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    
+    .header p {
+      opacity: 0.9;
+      font-size: 0.95rem;
+    }
+    
+    .metadata {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      padding: 1.5rem 2rem;
+      background: #f7fafc;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    
+    .metadata-item {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .metadata-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #718096;
+      margin-bottom: 0.25rem;
+    }
+    
+    .metadata-value {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #2d3748;
+    }
+    
+    .content {
+      padding: 2rem;
+    }
+    
+    .section {
+      margin-bottom: 3rem;
+    }
+    
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #2d3748;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 3px solid #667eea;
+    }
+    
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .kpi-card {
+      background: #f7fafc;
+      border-radius: 8px;
+      padding: 1.5rem;
+      border-left: 4px solid #667eea;
+    }
+    
+    .kpi-card.highlight {
+      border-left-color: #48bb78;
+      background: #f0fff4;
+    }
+    
+    .kpi-card.warning {
+      border-left-color: #ed8936;
+      background: #fffaf0;
+    }
+    
+    .kpi-label {
+      font-size: 0.875rem;
+      color: #718096;
+      margin-bottom: 0.5rem;
+    }
+    
+    .kpi-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #2d3748;
+    }
+    
+    .kpi-subtext {
+      font-size: 0.875rem;
+      color: #718096;
+      margin-top: 0.25rem;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    
+    thead {
+      background: #f7fafc;
+    }
+    
+    th {
+      padding: 1rem;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.875rem;
+      color: #4a5568;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    
+    td {
+      padding: 1rem;
+      border-bottom: 1px solid #e2e8f0;
+      font-size: 0.95rem;
+    }
+    
+    tbody tr:hover {
+      background: #f7fafc;
+    }
+    
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    
+    .badge-success {
+      background: #c6f6d5;
+      color: #22543d;
+    }
+    
+    .badge-warning {
+      background: #feebc8;
+      color: #7c2d12;
+    }
+    
+    .badge-info {
+      background: #bee3f8;
+      color: #2c5282;
+    }
+    
+    .insight-box {
+      background: #edf2f7;
+      border-left: 4px solid #4299e1;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+    
+    .insight-box h3 {
+      font-size: 1.1rem;
+      color: #2d3748;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .insight-box ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    
+    .insight-box li {
+      padding: 0.5rem 0;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+    
+    .insight-box li:before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: #4299e1;
+      font-weight: bold;
+    }
+    
+    .chart-placeholder {
+      background: #f7fafc;
+      border: 2px dashed #cbd5e0;
+      border-radius: 8px;
+      padding: 3rem;
+      text-align: center;
+      color: #718096;
+      margin: 1rem 0;
+    }
+    
+    .footer {
+      background: #f7fafc;
+      padding: 2rem;
+      text-align: center;
+      color: #718096;
+      font-size: 0.875rem;
+      border-top: 2px solid #e2e8f0;
+    }
+    
+    @media print {
+      body {
+        padding: 0;
+      }
+      .container {
+        box-shadow: none;
+      }
+    }
+    
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 0.5rem;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: #667eea;
+      transition: width 0.3s ease;
+    }
+    
+    .progress-fill.high {
+      background: #48bb78;
+    }
+    
+    .progress-fill.medium {
+      background: #ed8936;
+    }
+    
+    .progress-fill.low {
+      background: #f56565;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>📊 Finance Performance Report</h1>
+      <p>Vendor Finance Analytics • Generated January 3rd, 2026</p>
+    </div>
+    
+    <div class="metadata">
+      <div class="metadata-item">
+        <div class="metadata-label">Vendor</div>
+        <div class="metadata-value">vendor-001</div>
+      </div>
+      <div class="metadata-item">
+        <div class="metadata-label">Source File</div>
+        <div class="metadata-value">vendor-ecommerce-export.csv</div>
+      </div>
+      <div class="metadata-item">
+        <div class="metadata-label">Date Range</div>
+        <div class="metadata-value">
+          04 Oct 2025 - 02 Jan 2026
+        </div>
+      </div>
+      <div class="metadata-item">
+        <div class="metadata-label">Total Orders</div>
+        <div class="metadata-value">191</div>
+      </div>
+    </div>
+    
+    <div class="content">
+      
+    <div class="section">
+      <h2 class="section-title">Global Performance Metrics</h2>
+      
+      <div class="kpi-grid">
+        <div class="kpi-card ">
+          <div class="kpi-label">Finance Attachment Rate</div>
+          <div class="kpi-value">45.0%</div>
+          <div class="kpi-subtext">86 of 191 orders</div>
+          <div class="progress-bar">
+            <div class="progress-fill low" 
+                 style="width: 45%"></div>
+          </div>
+        </div>
+        
+        <div class="kpi-card ">
+          <div class="kpi-label">Finance Approval Rate</div>
+          <div class="kpi-value">74.4%</div>
+          <div class="kpi-subtext">64 of 86 approved</div>
+          <div class="progress-bar">
+            <div class="progress-fill medium" 
+                 style="width: 74%"></div>
+          </div>
+        </div>
+        
+        <div class="kpi-card">
+          <div class="kpi-label">Avg Order Value (Finance)</div>
+          <div class="kpi-value">£1,518.77</div>
+          <div class="kpi-subtext">vs £1,093.71 cash</div>
+        </div>
+        
+        <div class="kpi-card">
+          <div class="kpi-label">Total Order Value</div>
+          <div class="kpi-value">£245,646.11</div>
+          <div class="kpi-subtext">Avg: £1,286.11</div>
+        </div>
+      </div>
+    </div>
+  
+      
+    <div class="section">
+      <h2 class="section-title">Product Performance (Top 10)</h2>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Total Orders</th>
+            <th>Financed</th>
+            <th>Attachment Rate</th>
+            <th>Approval Rate</th>
+            <th>Avg Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+    <tr>
+      <td><strong>iPad Pro 12.9&quot; M2</strong></td>
+      <td>11</td>
+      <td>7</td>
+      <td>
+        63.6%
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 64%"></div>
+        </div>
+      </td>
+      <td>
+        <span class="badge badge-warning">
+          57.1%
+        </span>
+      </td>
+      <td>£1,249.00</td>
+    </tr>
+  
+    <tr>
+      <td><strong>MacBook Pro 14&quot; M3</strong></td>
+      <td>11</td>
+      <td>7</td>
+      <td>
+        63.6%
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 64%"></div>
+        </div>
+      </td>
+      <td>
+        <span class="badge badge-warning">
+          71.4%
+        </span>
+      </td>
+      <td>£1,899.00</td>
+    </tr>
+  
+    <tr>
+      <td><strong>Mac Mini M2 Pro</strong></td>
+      <td>10</td>
+      <td>7</td>
+      <td>
+        70.0%
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 70%"></div>
+        </div>
+      </td>
+      <td>
+        <span class="badge badge-warning">
+          71.4%
+        </span>
+      </td>
+      <td>£1,299.00</td>
+    </tr>
+  
+    <tr>
+      <td><strong>iPhone 15 Pro Max</strong></td>
+      <td>11</td>
+      <td>7</td>
+      <td>
+        63.6%
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 64%"></div>
+        </div>
+      </td>
+      <td>
+        <span class="badge badge-warning">
+          71.4%
+        </span>
+      </td>
+      <td>£1,199.00</td>
+    </tr>
+  
+    <tr>
+      <td><strong>Dell XPS 15</strong></td>
+      <td>11</td>
+      <td>6</td>
+      <td>
+        54.5%
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 55%"></div>
+        </div>
+      </td>
+      <td>
+        <span class="badge badge-warning">
+          66.7%
+        </span>
+      </td>
+      <td>£1,799.00</td>
+    </tr>
+  
+    <tr>
+      <td><strong>iMac 24&quot; M3</strong></td>
+      <td>8</td>
+      <td>6</td>
+      <td>
+        75.0%
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 75%"></div>
+        </div>
+      </td>
+      <td>
+        <span class="badge badge-warning">
+          66.7%
+        </span>
+      </td>
+      <td>£1,699.00</td>
+    </tr>
+  
+    <tr>
+      <td><strong>Surface Laptop 5</strong></td>
+      <td>10</td>
+      <td>5</td>
+      <td>
+        50.0%
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 50%"></div>
+        </div>
+      </td>
+      <td>
+        <span class="badge badge-warning">
+          60.0%
+        </span>
+      </td>
+      <td>£1,399.00</td>
+    </tr>
+  
+    <tr>
+      <td><strong>ThinkPad X1 Carbon</strong></td>
+      <td>12</td>
+      <td>5</td>
+      <td>
+        41.7%
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 42%"></div>
+        </div>
+      </td>
+      <td>
+        <span class="badge badge-success">
+          100.0%
+        </span>
+      </td>
+      <td>£1,899.00</td>
+    </tr>
+  
+    <tr>
+      <td><strong>MacBook Air 15&quot; M2</strong></td>
+      <td>7</td>
+      <td>5</td>
+      <td>
+        71.4%
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 71%"></div>
+        </div>
+      </td>
+      <td>
+        <span class="badge badge-success">
+          80.0%
+        </span>
+      </td>
+      <td>£1,499.00</td>
+    </tr>
+  
+    <tr>
+      <td><strong>Samsung Galaxy Tab S9</strong></td>
+      <td>17</td>
+      <td>4</td>
+      <td>
+        23.5%
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 24%"></div>
+        </div>
+      </td>
+      <td>
+        <span class="badge badge-success">
+          100.0%
+        </span>
+      </td>
+      <td>£899.00</td>
+    </tr>
+  
+        </tbody>
+      </table>
+    </div>
+  
+      
+    <div class="section">
+      <h2 class="section-title">Repayment Term Analysis</h2>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>Term</th>
+            <th>Applications</th>
+            <th>Approved</th>
+            <th>Approval Rate</th>
+            <th>Total Value</th>
+            <th>Avg Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+    <tr>
+      <td><strong>24 months</strong></td>
+      <td>25</td>
+      <td>20</td>
+      <td>
+        <span class="badge badge-success">
+          80.0%
+        </span>
+      </td>
+      <td>£38,125.00</td>
+      <td>£1,525.00</td>
+    </tr>
+  
+    <tr>
+      <td><strong>48 months</strong></td>
+      <td>22</td>
+      <td>14</td>
+      <td>
+        <span class="badge badge-warning">
+          63.6%
+        </span>
+      </td>
+      <td>£35,628.00</td>
+      <td>£1,619.45</td>
+    </tr>
+  
+    <tr>
+      <td><strong>36 months</strong></td>
+      <td>22</td>
+      <td>14</td>
+      <td>
+        <span class="badge badge-warning">
+          63.6%
+        </span>
+      </td>
+      <td>£30,828.00</td>
+      <td>£1,401.27</td>
+    </tr>
+  
+    <tr>
+      <td><strong>12 months</strong></td>
+      <td>17</td>
+      <td>16</td>
+      <td>
+        <span class="badge badge-success">
+          94.1%
+        </span>
+      </td>
+      <td>£26,033.00</td>
+      <td>£1,531.35</td>
+    </tr>
+  
+        </tbody>
+      </table>
+    </div>
+  
+      
+    <div class="section">
+      <div class="insight-box">
+        <h3>💡 Key Insights & Recommendations</h3>
+        <ul>
+          <li>24-month term is most popular with 25 applications - consider making this the default option</li><li>Customers using finance spend significantly more - promote finance option to increase average basket size</li><li>"iPad Pro 12.9" M2" is your top financed product with 7 finance applications</li>
+        </ul>
+      </div>
+    </div>
+  
+      
+    <div class="section">
+      <h2 class="section-title">⚠️ Friction Hotspots</h2>
+      <p style="margin-bottom: 1rem; color: #718096;">
+        Products with high customer interest (attachment rate) but lower-than-average approval rates.
+        These represent opportunities to improve conversion.
+      </p>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Attachment Rate</th>
+            <th>Approval Rate</th>
+            <th>Applications</th>
+            <th>Recommendation</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+    <tr>
+      <td><strong>iPad Pro 12.9&quot; M2</strong></td>
+      <td>
+        <span class="badge badge-info">63.6%</span>
+      </td>
+      <td>
+        <span class="badge badge-warning">57.1%</span>
+      </td>
+      <td>7</td>
+      <td>Review pricing, eligibility criteria, or product positioning</td>
+    </tr>
+  
+    <tr>
+      <td><strong>MacBook Pro 14&quot; M3</strong></td>
+      <td>
+        <span class="badge badge-info">63.6%</span>
+      </td>
+      <td>
+        <span class="badge badge-warning">71.4%</span>
+      </td>
+      <td>7</td>
+      <td>Review pricing, eligibility criteria, or product positioning</td>
+    </tr>
+  
+    <tr>
+      <td><strong>Mac Mini M2 Pro</strong></td>
+      <td>
+        <span class="badge badge-info">70.0%</span>
+      </td>
+      <td>
+        <span class="badge badge-warning">71.4%</span>
+      </td>
+      <td>7</td>
+      <td>Review pricing, eligibility criteria, or product positioning</td>
+    </tr>
+  
+    <tr>
+      <td><strong>iPhone 15 Pro Max</strong></td>
+      <td>
+        <span class="badge badge-info">63.6%</span>
+      </td>
+      <td>
+        <span class="badge badge-warning">71.4%</span>
+      </td>
+      <td>7</td>
+      <td>Review pricing, eligibility criteria, or product positioning</td>
+    </tr>
+  
+    <tr>
+      <td><strong>Dell XPS 15</strong></td>
+      <td>
+        <span class="badge badge-info">54.5%</span>
+      </td>
+      <td>
+        <span class="badge badge-warning">66.7%</span>
+      </td>
+      <td>6</td>
+      <td>Review pricing, eligibility criteria, or product positioning</td>
+    </tr>
+  
+    <tr>
+      <td><strong>iMac 24&quot; M3</strong></td>
+      <td>
+        <span class="badge badge-info">75.0%</span>
+      </td>
+      <td>
+        <span class="badge badge-warning">66.7%</span>
+      </td>
+      <td>6</td>
+      <td>Review pricing, eligibility criteria, or product positioning</td>
+    </tr>
+  
+    <tr>
+      <td><strong>Surface Laptop 5</strong></td>
+      <td>
+        <span class="badge badge-info">50.0%</span>
+      </td>
+      <td>
+        <span class="badge badge-warning">60.0%</span>
+      </td>
+      <td>5</td>
+      <td>Review pricing, eligibility criteria, or product positioning</td>
+    </tr>
+  
+    <tr>
+      <td><strong>iPhone 15 Pro</strong></td>
+      <td>
+        <span class="badge badge-info">50.0%</span>
+      </td>
+      <td>
+        <span class="badge badge-warning">66.7%</span>
+      </td>
+      <td>3</td>
+      <td>Review pricing, eligibility criteria, or product positioning</td>
+    </tr>
+  
+        </tbody>
+      </table>
+    </div>
+  
+    </div>
+    
+    <div class="footer">
+      <p>Generated by VendFI Analytics Engine v1.0 • Jan 3, 2026, 8:00:58 PM</p>
+      <p style="margin-top: 0.5rem;">Vendor Finance Analytics for Embedded Finance Providers</p>
+    </div>
+  </div>
+</body>
+</html>
