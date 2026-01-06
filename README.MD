@@ -2,7 +2,7 @@
 
 ## Our Solution
 
-**VendFI turns messy CSV exports into beautiful, actionable finance performance reports in seconds.**
+**VendFI turns messy CSV exports into beautiful, actionable finance performance reports in seconds. Full finance performance telemetry—not just 3 numbers. Filter by product, channel, customer segment, geography, and time. See what's working, understand what's not, optimize everything.**
 
 ### What It Does
 
