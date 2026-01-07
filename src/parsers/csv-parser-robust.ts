@@ -9,6 +9,13 @@ import {
   ImportResult,
   CanonicalField,
 } from "../types";
+import {
+  normalizeSalesChannel,
+  normalizeCustomerSegment,
+  normalizeGeography,
+  normalizeCurrency,
+  normalizeVendorId,
+} from "../normalizers/value-normalizer";
 import { normalizeDate } from "../normalizers/date-normalizer";
 import { normalizeStatus } from "../normalizers/status-normalizer";
 import {
@@ -17,6 +24,7 @@ import {
   normalizeInteger,
   normalizeString,
 } from "../normalizers/value-normalizer";
+import { calculateDealSizeBand } from "../types/dimensions";
 
 /**
  * Advanced parsing options
@@ -405,9 +413,32 @@ export class RobustCSVParser {
       );
 
       const customerId = normalizeString(getValue(CanonicalField.CUSTOMER_ID));
-      const customerSegment = normalizeString(
+
+      // NEW: Vendor ID (required for multi-vendor)
+      // Try to get from CSV, fall back to "default" if not present
+      let vendorId = normalizeVendorId(getValue(CanonicalField.VENDOR_ID));
+      if (!vendorId) {
+        // Use default vendor_id if not mapped in CSV
+        // In production, the processor will override this with --vendor flag
+        vendorId = "default";
+      }
+
+      // NEW: Dimensional fields (all optional)
+      const salesChannel = normalizeSalesChannel(
+        getValue(CanonicalField.SALES_CHANNEL),
+      );
+      const customerSegment = normalizeCustomerSegment(
         getValue(CanonicalField.CUSTOMER_SEGMENT),
       );
+      const geography = normalizeGeography(
+        getValue(CanonicalField.GEOGRAPHY_COUNTRY),
+        getValue(CanonicalField.GEOGRAPHY_REGION),
+        getValue(CanonicalField.GEOGRAPHY_POSTAL_CODE),
+      );
+      const currency = normalizeCurrency(getValue(CanonicalField.CURRENCY));
+
+      // Compute deal size band from order_value
+      const dealSizeBand = calculateDealSizeBand(orderValue);
 
       const record: NormalizedRecord = {
         order_id: orderId,
@@ -422,7 +453,14 @@ export class RobustCSVParser {
         finance_decision_status: financeDecisionStatus,
         finance_decision_date: financeDecisionDate,
         customer_id: customerId,
+        // Multi-vendor field (required)
+        vendor_id: vendorId,
+        // Dimensional fields (optional)
+        sales_channel: salesChannel,
         customer_segment: customerSegment,
+        geography: geography,
+        currency: currency,
+        deal_size_band: dealSizeBand,
       };
 
       return { record, errors };
