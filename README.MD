@@ -2,13 +2,16 @@
 
 ## Our Solution
 
-**VendFI turns messy CSV exports into beautiful, actionable finance performance reports in seconds. Full finance performance telemetry—not just 3 numbers. Filter by product, channel, customer segment, geography, and time. See what's working, understand what's not, optimize everything.**
+**Finance performance analytics for UK equipment vendors – a vendor‑side view of how finance is really affecting your sales. Full finance performance telemetry filter by product, channel, customer segment, geography, and time. See what's working, understand what's not, optimize everything.**
 
 ### What It Does
 
-1. **Vendor uploads** their sales/finance CSV (from their store, finance portal, or accounting system)
-2. **VendFI automatically** understands the data format (even messy ones)
-3. **Instant analytics** show exactly how finance is performing
+1. **Clear view of how many orders use finance and how that’s changing over time.
+2. **Product / category / manufacturer breakdown of financed sales and approval rates.
+3. **Term and deal‑size breakdown (which terms work, which don’t).
+4. **Finance impact on AOV and revenue share.
+5. **A simple funnel from applications to approvals and funded deals (where data allows).
+6. **3–5 concrete changes you can make to your offers or flows.
 
 ### What Vendors See
 
@@ -19,7 +22,7 @@ ORD002, 2024-11-16, iPad Pro, £1249, yes, 36, declined
 ORD003, 2024-11-17, MacBook Air, £999, no, ...
 ```
 
-**They get professional insights:**
+**They get professional and deep insights:**
 ```
 📊 Finance Performance Dashboard
 
