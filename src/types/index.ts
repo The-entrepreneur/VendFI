@@ -210,13 +210,77 @@ export interface TimeSeriesPoint {
 }
 
 /**
+ * Sales channel metrics (Week 4)
+ * Breakdown of performance by sales channel (web, in-store, telesales, etc.)
+ */
+export interface ChannelMetrics {
+  sales_channel: SalesChannel;
+  total_orders: number;
+  financed_orders: number;
+  attachment_rate: number | null;
+  approved_applications: number;
+  approval_rate: number | null;
+  total_value: number;
+  avg_order_value: number | null;
+}
+
+/**
+ * Customer segment metrics (Week 4)
+ * Breakdown of performance by customer segment (SME-Small, SME-Medium, Enterprise, Startup)
+ */
+export interface SegmentMetrics {
+  customer_segment: CustomerSegment;
+  total_orders: number;
+  financed_orders: number;
+  attachment_rate: number | null;
+  approved_applications: number;
+  approval_rate: number | null;
+  total_value: number;
+  avg_order_value: number | null;
+}
+
+/**
+ * Geography metrics (Week 4)
+ * Breakdown of performance by country and region
+ */
+export interface GeographyMetrics {
+  country: string; // ISO country code (e.g., "GB", "US", "EU")
+  region?: string | null; // Region/state (optional)
+  total_orders: number;
+  financed_orders: number;
+  attachment_rate: number | null;
+  approved_applications: number;
+  approval_rate: number | null;
+  total_value: number;
+  avg_order_value: number | null;
+  currency_summary?: {
+    currency: Currency;
+    total_value: number;
+    order_count: number;
+  }[];
+}
+
+/**
+ * Deal size band metrics (Week 4)
+ * Breakdown of performance by order value bands
+ */
+export interface DealSizeMetrics {
+  deal_size_band: DealSizeBand;
+  total_orders: number;
+  financed_orders: number;
+  attachment_rate: number | null;
+  approved_applications: number;
+  approval_rate: number | null;
+  total_value: number;
+  avg_order_value: number | null;
+  min_value: number;
+  max_value: number;
+}
+
+/**
  * Complete analytics output
  * Extended to include vendor_id for multi-vendor tracking
- *
- * PHASE 1 NOTE:
- * - vendor_id is now required (identifies which vendor this report is for)
- * - Dimensional metrics (channel, segment, geography, deal_size) will be added in Week 4
- * - For now, these are commented out as placeholders
+ * Extended to include dimensional metrics (Week 4)
  */
 export interface AnalyticsReport {
   // MULTI-VENDOR IDENTIFIER (NEW - required)
@@ -229,12 +293,11 @@ export interface AnalyticsReport {
   time_series: TimeSeriesPoint[];
   friction_hotspots: ProductMetrics[]; // High attachment, low approval
 
-  // DIMENSIONAL METRICS (coming in Week 4)
-  // Uncomment when Week 4 aggregators are implemented
-  // channel_metrics?: ChannelMetrics[];
-  // segment_metrics?: SegmentMetrics[];
-  // geography_metrics?: GeographyMetrics[];
-  // deal_size_metrics?: DealSizeMetrics[];
+  // DIMENSIONAL METRICS (Week 4)
+  channel_metrics?: ChannelMetrics[]; // Performance by sales channel
+  segment_metrics?: SegmentMetrics[]; // Performance by customer segment
+  geography_metrics?: GeographyMetrics[]; // Performance by geography
+  deal_size_metrics?: DealSizeMetrics[]; // Performance by deal size band
 }
 
 /**

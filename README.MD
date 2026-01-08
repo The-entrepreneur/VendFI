@@ -1,4 +1,4 @@
-## VendFI: See What's Working, Fix What's Not || 
+## VendFI Analytics: See What's Working, Fix What's Not ||
 
 ## Our Solution
 

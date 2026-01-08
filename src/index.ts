@@ -9,6 +9,22 @@ export {
   createManualMapping,
 } from "./parsers/field-mapper";
 export { parseCSVString } from "./parsers/csv-parser";
+export {
+  VendorStorage,
+  getVendorStorage,
+  resetVendorStorage,
+} from "./storage/vendor-storage";
+export { FileManager } from "./storage/file-manager";
+export { DeduplicationEngine } from "./storage/deduplication";
+export type {
+  ImportMetadata,
+  LoadRecordsOptions,
+  StorageOperationResult,
+  DeduplicationConfig,
+  StorageConfig,
+  VendorDirectoryStructure,
+  VendorStatistics,
+} from "./storage/storage-types";
 
 // Re-export commonly used types and classes for convenience
 import { FieldMapping, AnalyticsReport } from "./types";
